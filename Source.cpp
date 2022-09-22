@@ -1,3 +1,9 @@
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif 
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -13,12 +19,23 @@ int main() {
 	int amountPeople;
 	int groupSize;
 	int randPlacement = -1;
+	int tempAmount;
 	bool goAgain = true;
 	char redo;
 
-		// gets initial amount of people
+	// gets initial amount of people
 		cout << "How many people would you like to split into groups?: ";
-		cin >> amountPeople;
+		if (!(cin >> tempAmount)) {
+			cin.clear();
+			cin.ignore(100, '\n');
+			cout << "Invalid answer try again in a few seconds.";
+			Sleep(3000);
+			system("CLS");
+			main();
+		}
+		else {
+			amountPeople = tempAmount;
+		}
 
 		while (amountPeople == 0) {
 			cout << "You cannot put zero people as an input, try again: ";
